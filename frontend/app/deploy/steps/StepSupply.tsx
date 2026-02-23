@@ -2,7 +2,9 @@ import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/Input";
 
 interface StepProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     register: UseFormRegister<any>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     errors: FieldErrors<any>;
 }
 
