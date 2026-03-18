@@ -71,10 +71,7 @@ export function SettingsModal() {
   // Validate a URL by sending a lightweight request
   // ---------------------------------------------------------------------------
   const validateUrl = useCallback(
-    async (
-      url: string,
-      kind: "rpc" | "horizon",
-    ): Promise<boolean> => {
+    async (url: string, kind: "rpc" | "horizon"): Promise<boolean> => {
       const setStatus = kind === "rpc" ? setRpcStatus : setHorizonStatus;
       const setError = kind === "rpc" ? setRpcError : setHorizonError;
 
@@ -89,7 +86,9 @@ export function SettingsModal() {
 
       try {
         const endpoint =
-          kind === "rpc" ? url : `${url.replace(/\/$/, "")}/.well-known/stellar.toml`;
+          kind === "rpc"
+            ? url
+            : `${url.replace(/\/$/, "")}/.well-known/stellar.toml`;
 
         const res = await fetch(endpoint, {
           method: kind === "rpc" ? "POST" : "GET",
@@ -131,7 +130,14 @@ export function SettingsModal() {
       setHorizonUrl(draftHorizon);
       handleClose();
     }
-  }, [draftRpc, draftHorizon, validateUrl, setRpcUrl, setHorizonUrl, handleClose]);
+  }, [
+    draftRpc,
+    draftHorizon,
+    validateUrl,
+    setRpcUrl,
+    setHorizonUrl,
+    handleClose,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Reset
@@ -201,7 +207,7 @@ export function SettingsModal() {
       <dialog
         ref={dialogRef}
         onClose={handleClose}
-        className="w-full max-w-lg rounded-2xl border border-white/10 bg-void-800 p-0 text-white backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+        className="w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-lg rounded-2xl border border-white/10 bg-void-800 p-0 text-white backdrop:bg-black/60 backdrop:backdrop-blur-sm"
       >
         <div className="flex flex-col gap-6 p-6">
           {/* Header */}
@@ -293,10 +299,16 @@ export function SettingsModal() {
             </button>
 
             <div className="flex gap-3">
-              <button onClick={handleClose} className="btn-secondary px-4 py-2 text-sm">
+              <button
+                onClick={handleClose}
+                className="btn-secondary px-4 py-2 text-sm"
+              >
                 Cancel
               </button>
-              <button onClick={handleSave} className="btn-primary px-4 py-2 text-sm">
+              <button
+                onClick={handleSave}
+                className="btn-primary px-4 py-2 text-sm"
+              >
                 Save
               </button>
             </div>

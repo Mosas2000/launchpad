@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo, useCallback } from "react";
-import {
-  ArrowUpDown,
-  AlertCircle,
-  Loader2,
-  Download,
-} from "lucide-react";
+import { ArrowUpDown, AlertCircle, Loader2, Download } from "lucide-react";
 import {
   truncateAddress,
   type TokenInfo,
@@ -422,6 +417,7 @@ export default function TokenDashboard({ contractId }: { contractId: string }) {
   const [error, setError] = useState<string | null>(null);
   const { fetchTokenInfo, fetchTopHolders, fetchSupplyBreakdown } =
     useSoroban();
+  console.log(tokenInfo);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -436,8 +432,8 @@ export default function TokenDashboard({ contractId }: { contractId: string }) {
       setHolders(holderData);
 
       // Fetch supply breakdown
-      const breakdown = await fetchSupplyBreakdown(contractId);
-      setSupplyBreakdown(breakdown);
+      // const breakdown = await fetchSupplyBreakdown(contractId);
+      // setSupplyBreakdown(breakdown);
     } catch (err) {
       setError(
         err instanceof Error
@@ -544,7 +540,10 @@ export default function TokenDashboard({ contractId }: { contractId: string }) {
       </section>
 
       {/* Transaction History */}
-      <section aria-label="Transaction history" className="mt-16 border-t border-white/5 pt-10">
+      <section
+        aria-label="Transaction history"
+        className="mt-16 border-t border-white/5 pt-10"
+      >
         <TransactionHistory
           contractId={contractId}
           decimals={tokenInfo.decimals}
