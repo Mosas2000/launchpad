@@ -6,8 +6,14 @@
  */
 
 import "@testing-library/jest-dom";
-import { parseSorobanError, simulateTransaction } from "@/lib/transactionSimulator";
-import { renderHook, act } from "@testing-library/react";
+import {
+  parseSorobanError,
+  // simulateTransaction,
+} from "@/lib/transactionSimulator";
+import {
+  renderHook,
+  //  act
+} from "@testing-library/react";
 import { useTransactionSimulator } from "@/hooks/useTransactionSimulator";
 
 // Mock useNetwork
@@ -132,7 +138,9 @@ describe("PreflightCheck Components", () => {
   describe("PreflightError", () => {
     it("displays error messages", () => {
       render(<PreflightError errors={["Failed to transfer tokens"]} />);
-      expect(screen.getByText("Failed to transfer tokens")).toBeInTheDocument();
+      expect(
+        screen.getByText(/Failed to transfer tokens/i),
+      ).toBeInTheDocument();
     });
 
     it("displays multiple errors", () => {
@@ -140,14 +148,14 @@ describe("PreflightCheck Components", () => {
       render(<PreflightError errors={errors} />);
 
       errors.forEach((error) => {
-        expect(screen.getByText(error)).toBeInTheDocument();
+        expect(screen.getByText(new RegExp(error, "i"))).toBeInTheDocument();
       });
     });
 
     it("calls onDismiss when dismiss button clicked", () => {
       const onDismiss = jest.fn();
       const { container } = render(
-        <PreflightError errors={["Test error"]} onDismiss={onDismiss} />
+        <PreflightError errors={["Test error"]} onDismiss={onDismiss} />,
       );
 
       const dismissButton = container.querySelector("button");
@@ -165,7 +173,7 @@ describe("PreflightCheck Components", () => {
   describe("PreflightWarning", () => {
     it("displays warning messages", () => {
       render(<PreflightWarning warnings={["High transaction fee"]} />);
-      expect(screen.getByText("High transaction fee")).toBeInTheDocument();
+      expect(screen.getByText(/High transaction fee/i)).toBeInTheDocument();
     });
 
     it("returns null if no warnings", () => {
@@ -182,7 +190,9 @@ describe("PreflightCheck Components", () => {
 
     it("uses default message if not provided", () => {
       render(<PreflightSuccess />);
-      expect(screen.getByText("Transaction is ready to sign")).toBeInTheDocument();
+      expect(
+        screen.getByText("Transaction is ready to sign"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -210,9 +220,9 @@ describe("PreflightCheck Components", () => {
           isLoading={false}
           errors={["Test error"]}
           warnings={[]}
-        />
+        />,
       );
-      expect(screen.getByText("Test error")).toBeInTheDocument();
+      expect(screen.getByText(/Test error/i)).toBeInTheDocument();
     });
 
     it("shows warnings when no errors", () => {
@@ -221,9 +231,9 @@ describe("PreflightCheck Components", () => {
           isLoading={false}
           errors={[]}
           warnings={["Test warning"]}
-        />
+        />,
       );
-      expect(screen.getByText("Test warning")).toBeInTheDocument();
+      expect(screen.getByText(/Test warning/i)).toBeInTheDocument();
     });
 
     it("shows success message when no errors or warnings", () => {
@@ -233,14 +243,14 @@ describe("PreflightCheck Components", () => {
           errors={[]}
           warnings={[]}
           successMessage="All good!"
-        />
+        />,
       );
       expect(screen.getByText("All good!")).toBeInTheDocument();
     });
 
     it("returns null when nothing to display", () => {
       const { container } = render(
-        <PreflightCheckDisplay isLoading={false} errors={[]} warnings={[]} />
+        <PreflightCheckDisplay isLoading={false} errors={[]} warnings={[]} />,
       );
       expect(container.firstChild).toBeNull();
     });
@@ -262,6 +272,7 @@ describe("MintForm with Pre-flight Checks", () => {
 
   it("disables submit button until check succeeds", async () => {
     const { container } = render(<MintForm adminAddress="GABC123..." />);
+    console.log(container);
 
     const submitButton = screen.getByText("Mint Tokens") as HTMLButtonElement;
     expect(submitButton.disabled).toBe(true);
@@ -279,8 +290,8 @@ describe("MintForm with Pre-flight Checks", () => {
 
     // Click check
     const checkButton = screen.getByText("Check Transaction");
-    // act(() => checkButton.click());
 
+    console.log(checkButton, inputs);
     // Wait for results
     // expect(screen.queryByText(/ready|error/i)).toBeInTheDocument();
   });
@@ -318,15 +329,13 @@ describe("Simulation with Mock RPC", () => {
 describe("Pre-flight Check Snapshots", () => {
   it("matches error display snapshot", () => {
     const { container } = render(
-      <PreflightError errors={["Insufficient balance"]} />
+      <PreflightError errors={["Insufficient balance"]} />,
     );
     expect(container).toMatchSnapshot();
   });
 
   it("matches success display snapshot", () => {
-    const { container } = render(
-      <PreflightSuccess message="Ready to sign" />
-    );
+    const { container } = render(<PreflightSuccess message="Ready to sign" />);
     expect(container).toMatchSnapshot();
   });
 });

@@ -74,7 +74,7 @@ warnings: [],
 };
 
 - remove simulation an make it real implementation
-- modularize `app/dashboard/[contractId]/TokenDashboard.tsx`
+- modularize `app/dashboard/[contractId]/TokenDashboard.tsx`, `app/my-account/PersonalDashboard.tsx`
 - fetchSupplyBreakdown is still a simulation. Fix
 - list out all the simulation in `lib/stellar.ts`
 - let network toggle in `app/providers/NetworkProvider.tsx` be used to seperate mainnet and testnet env var accordingly

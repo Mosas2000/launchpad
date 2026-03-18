@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { AlertCircle, Trash2, Copy, Check } from "lucide-react";
 
 interface Allowance {
@@ -93,13 +92,20 @@ export function AllowanceList({
             <div className="flex-1 min-w-0 space-y-2">
               {/* Spender Address */}
               <div>
-                <p className="text-xs font-medium text-gray-400 uppercase mb-1">Spender</p>
+                <p className="text-xs font-medium text-gray-400 uppercase mb-1">
+                  Spender
+                </p>
                 <div className="flex items-center gap-2">
                   <code className="text-sm font-mono bg-black/20 px-2 py-1 rounded text-gray-300 truncate">
                     {allowance.spenderAddress}
                   </code>
                   <button
-                    onClick={() => handleCopy(allowance.spenderAddress, `spender-${allowance.id}`)}
+                    onClick={() =>
+                      handleCopy(
+                        allowance.spenderAddress,
+                        `spender-${allowance.id}`,
+                      )
+                    }
                     className="p-1 hover:bg-white/10 rounded transition-colors"
                     title="Copy address"
                   >
@@ -115,11 +121,17 @@ export function AllowanceList({
               {/* Amount and Expiration */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-xs font-medium text-gray-400 uppercase mb-1">Amount</p>
-                  <p className="text-sm font-semibold text-white">{allowance.amount}</p>
+                  <p className="text-xs font-medium text-gray-400 uppercase mb-1">
+                    Amount
+                  </p>
+                  <p className="text-sm font-semibold text-white">
+                    {allowance.amount}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-400 uppercase mb-1">Status</p>
+                  <p className="text-xs font-medium text-gray-400 uppercase mb-1">
+                    Status
+                  </p>
                   <p
                     className={`text-sm font-medium ${
                       allowance.isExpired ? "text-red-400" : "text-green-400"
@@ -135,12 +147,14 @@ export function AllowanceList({
                 <p className="text-xs font-medium text-gray-400 uppercase mb-1">
                   Expires at Ledger
                 </p>
-                <p className="text-sm text-gray-300">{allowance.expirationLedger.toLocaleString()}</p>
+                <p className="text-sm text-gray-300">
+                  {allowance.expirationLedger.toLocaleString()}
+                </p>
               </div>
             </div>
 
             {/* Revoke Button */}
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               {onRevoke && (
                 <Button
                   onClick={() => handleRevoke(allowance.id)}

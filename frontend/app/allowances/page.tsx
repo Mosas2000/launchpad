@@ -16,14 +16,17 @@ import { AlertCircle } from "lucide-react";
  */
 export default function AllowancesPage() {
   const [selectedContractId, setSelectedContractId] = useState<string>("");
-  const [activeSection, setActiveSection] = useState<"manage" | "view">("manage");
+  const [activeSection, setActiveSection] = useState<"manage" | "view">(
+    "manage",
+  );
 
   // In a real implementation, this would fetch allowances from the contract
   const mockAllowances = [
     {
       id: "1",
       tokenContractId: selectedContractId || "C...",
-      spenderAddress: "GCPFGJGZOXPF5EZBQ7TGVGVW4ZBDAJT3RDSAICABJ7GCM3QQHLJNZ7PZ",
+      spenderAddress:
+        "GCPFGJGZOXPF5EZBQ7TGVGVW4ZBDAJT3RDSAICABJ7GCM3QQHLJNZ7PZ",
       amount: "1000.00",
       expirationLedger: 1000000,
       isExpired: false,
@@ -31,13 +34,16 @@ export default function AllowancesPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black">
+    <div className="min-h-screen bg-linear-to-b from-gray-950 via-gray-900 to-black">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Allowance Manager</h1>
+          <h1 className="text-4xl font-bold text-white mb-2">
+            Allowance Manager
+          </h1>
           <p className="text-gray-400">
-            Manage SEP-41 token allowances. Grant, revoke, and utilize token approvals.
+            Manage SEP-41 token allowances. Grant, revoke, and utilize token
+            approvals.
           </p>
         </div>
 
@@ -93,7 +99,9 @@ export default function AllowancesPage() {
         {activeSection === "view" && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-semibold text-white mb-4">Active Allowances</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">
+                Active Allowances
+              </h2>
               <p className="text-sm text-gray-400 mb-4">
                 View and manage all allowances granted to other addresses.
               </p>
@@ -127,8 +135,8 @@ export default function AllowancesPage() {
               <h3 className="font-semibold text-white">Grant Allowance</h3>
             </div>
             <p className="text-sm text-gray-400">
-              Authorize a spender address to transfer tokens on your behalf up to a specified
-              amount.
+              Authorize a spender address to transfer tokens on your behalf up
+              to a specified amount.
             </p>
           </div>
 
@@ -140,7 +148,8 @@ export default function AllowancesPage() {
               <h3 className="font-semibold text-white">Revoke Allowance</h3>
             </div>
             <p className="text-sm text-gray-400">
-              Remove a spender&apos;s ability to transfer your tokens. Revocation is instantaneous.
+              Remove a spender&apos;s ability to transfer your tokens.
+              Revocation is instantaneous.
             </p>
           </div>
 
@@ -152,7 +161,8 @@ export default function AllowancesPage() {
               <h3 className="font-semibold text-white">Transfer From</h3>
             </div>
             <p className="text-sm text-gray-400">
-              Transfer tokens on behalf of another address if they have granted you an allowance.
+              Transfer tokens on behalf of another address if they have granted
+              you an allowance.
             </p>
           </div>
         </div>

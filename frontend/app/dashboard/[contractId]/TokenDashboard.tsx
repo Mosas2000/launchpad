@@ -411,12 +411,15 @@ function HoldersTable({ holders }: { holders: TokenHolder[] }) {
 export default function TokenDashboard({ contractId }: { contractId: string }) {
   const [tokenInfo, setTokenInfo] = useState<TokenInfo | null>(null);
   const [holders, setHolders] = useState<TokenHolder[]>([]);
-  const [supplyBreakdown, setSupplyBreakdown] =
+  const [supplyBreakdown /*_setSupplyBreakdown*/] =
     useState<SupplyBreakdown | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { fetchTokenInfo, fetchTopHolders, fetchSupplyBreakdown } =
-    useSoroban();
+  const {
+    fetchTokenInfo,
+    fetchTopHolders,
+    // fetchSupplyBreakdown
+  } = useSoroban();
   console.log(tokenInfo);
 
   const loadData = useCallback(async () => {
@@ -443,7 +446,7 @@ export default function TokenDashboard({ contractId }: { contractId: string }) {
     } finally {
       setLoading(false);
     }
-  }, [contractId, fetchTokenInfo, fetchTopHolders, fetchSupplyBreakdown]);
+  }, [contractId, fetchTokenInfo, fetchTopHolders]);
 
   useEffect(() => {
     loadData();

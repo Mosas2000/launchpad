@@ -56,7 +56,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 function ShareButton({
-  contractId,
+  // contractId,
   tokenInfo,
 }: {
   contractId: string;
@@ -80,6 +80,7 @@ function ShareButton({
           url: url,
         });
       } catch (err) {
+        console.log(err);
         // User cancelled or error occurred
       }
     } else {
@@ -92,7 +93,7 @@ function ShareButton({
         // Clipboard API may be unavailable
       }
     }
-  }, [contractId, tokenInfo]);
+  }, [tokenInfo]);
 
   return (
     <button
@@ -262,8 +263,8 @@ function HoldersTable({ holders }: { holders: TokenHolder[] }) {
             {sorted.map((holder, i) => (
               <tr
                 key={holder.address}
-                className={`border-b border-white/5 transition-colors hover:bg-white/[0.02] ${
-                  i % 2 === 0 ? "bg-white/[0.01]" : ""
+                className={`border-b border-white/5 transition-colors hover:bg-white/2 ${
+                  i % 2 === 0 ? "bg-white/1" : ""
                 }`}
               >
                 <td className="px-4 py-3 font-mono text-xs text-stellar-300">
@@ -280,7 +281,7 @@ function HoldersTable({ holders }: { holders: TokenHolder[] }) {
                   <div className="flex items-center justify-end gap-2">
                     <div className="hidden h-1.5 w-16 overflow-hidden rounded-full bg-void-700 sm:block">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-stellar-500 to-stellar-400"
+                        className="h-full rounded-full bg-linear-to-r from-stellar-500 to-stellar-400"
                         style={{
                           width: `${Math.min(holder.sharePercent, 100)}%`,
                         }}

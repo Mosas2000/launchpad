@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import {
-  ArrowUpRight,
+  // ArrowUpRight,
   ArrowRight,
   Loader2,
   ArrowLeftRight,
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import {
   fetchAccountOperations,
-  truncateAddress,
+  // truncateAddress,
   type TokenActivityInfo,
 } from "@/lib/stellar";
 import { ExplorerLink } from "@/components/ui/ExplorerLink";
@@ -56,6 +56,7 @@ export default function ActivityFeed({ accountId }: { accountId: string }) {
         }
         setError(null);
       } catch (err) {
+        console.error(err);
         if (!isRefresh) {
           setError("Failed to fetch activity feed.");
         }
@@ -159,7 +160,7 @@ export default function ActivityFeed({ accountId }: { accountId: string }) {
             {operations.map((op, i) => (
               <tr
                 key={`${op.id}-${i}`}
-                className="transition-colors hover:bg-white/[0.02]"
+                className="transition-colors hover:bg-white/2"
               >
                 <td className="px-4 py-3">
                   <div

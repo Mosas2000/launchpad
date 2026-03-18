@@ -12,6 +12,7 @@ const navLinks = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/my-account", label: "My Account" },
 ] as const;
+console.log(navLinks);
 
 /**
  * Top navbar — extracted as a client component so wallet state
@@ -36,10 +37,7 @@ export function Navbar() {
     <nav className={navClassName}>
       <div className={containerClassName}>
         {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-lg font-bold"
-        >
+        <Link href="/" className="flex items-center gap-2 text-lg font-bold">
           <span className="text-2xl">🚀</span>
           <span className="gradient-text">SoroPad</span>
         </Link>

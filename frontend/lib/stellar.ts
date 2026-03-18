@@ -164,6 +164,7 @@ export async function fetchApprovedSpendersFromEvents(params: {
     return v as string[];
   };
 
+  // @TODO: Use an indexer for fetching approved spenders instead of scanning RPC events.
   // NOTE: This is best-effort. Not all RPC nodes retain unlimited history.
   // We page a limited number of times to avoid expensive scans.
   let cursor: string | undefined;
@@ -429,6 +430,7 @@ export async function fetchTransactionHistory(
   const currentLedger = await fetchCurrentLedger(config);
   // Fetch events from a reasonable start point (e.g., 100,000 ledgers back or from start of Soroban)
   // For testnet, ledgers are fast. Let's try to fetch a good chunk.
+  // @TODO: Implement proper indexing for transaction history instead of RPC getEvents.
   // In a real app, this would be indexed.
   const startLedger = Math.max(1, currentLedger - 10000);
 
@@ -500,6 +502,7 @@ export async function fetchAccountOperations(
 
     // Horizon's .forAccount() only accepts Ed25519 public keys (starting with G).
     // If the accountId is a contract ID (starting with C), we cannot query its operations this way.
+    // @TODO: Integrate a proper indexer (like Mercury) for fetching contract account operations.
     // In a production app, we would use an Indexer like Mercury for contract history.
     if (!accountId.startsWith("G") && !accountId.startsWith("M")) {
       return { records: [], nextCursor: null };
@@ -772,6 +775,7 @@ export async function fetchSupplyBreakdown(
     );
     const totalSupply = Number(decodeI128(totalSupplyVal));
 
+    // @TODO: Implement real circulating supply calculation.
     // For now, we'll estimate circulating supply as total supply
     // In a production app, you'd query all vesting contracts and subtract locked amounts
     let lockedSupply = 0;
@@ -782,6 +786,7 @@ export async function fetchSupplyBreakdown(
     // 2. Sum up unvested amounts across all schedules
     if (vestingContractId) {
       try {
+        // @TODO: Implement real locked supply calculation by reading vesting schedules.
         // This is a placeholder - actual implementation would need to
         // enumerate all vesting schedules and sum unvested amounts
         // For now, we'll return 0 for locked
@@ -792,6 +797,7 @@ export async function fetchSupplyBreakdown(
       }
     }
 
+    // @TODO: Implement proper total_burned tracking from the token contract.
     // Burned supply: In Stellar/Soroban, burned tokens are typically sent to a null address
     // or the supply is reduced. For now, we'll calculate it as the difference
     // between max supply (if exists) and total supply

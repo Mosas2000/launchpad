@@ -114,10 +114,7 @@ fn assert_supply_invariant(client: &TokenContractClient, accounts: &[&Address]) 
 fn assert_non_negative_balances(client: &TokenContractClient, accounts: &[&Address]) {
     for acct in accounts {
         let bal = client.balance(acct);
-        assert!(
-            bal >= 0,
-            "INVARIANT VIOLATED: negative balance {bal}"
-        );
+        assert!(bal >= 0, "INVARIANT VIOLATED: negative balance {bal}");
     }
 }
 
@@ -387,7 +384,7 @@ fn test_mint_i128_overflow() {
     let id = env.register_contract(None, TokenContract);
     let client = TokenContractClient::new(&env, &id);
     let admin = Address::generate(&env);
-    let user  = Address::generate(&env);
+    let user = Address::generate(&env);
 
     // Start near i128::MAX so the next mint overflows total_supply.
     client.initialize(
@@ -423,7 +420,7 @@ fn test_transfer_underflow_rejected() {
 #[should_panic(expected = "mint would exceed max_supply")]
 fn test_mint_exceeds_max_supply_rejected() {
     let initial = 500_0000000i128;
-    let cap     = 1_000_0000000i128;
+    let cap = 1_000_0000000i128;
     let (_, client, _, user) = setup_capped_env(initial, cap);
 
     // Remaining capacity is 500_0000000 — minting 1 more overflows the cap.

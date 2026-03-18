@@ -45,6 +45,7 @@ export default function DeployForm() {
   } | null>(null);
 
   const simulator = useTransactionSimulator();
+  console.log(simulator);
 
   const {
     register,
@@ -191,6 +192,7 @@ export default function DeployForm() {
                 variant="secondary"
                 onClick={async () => {
                   const formData = watch();
+                  console.log(formData);
                   setPreflightResult({
                     isLoading: true,
                     success: false,

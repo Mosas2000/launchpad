@@ -26,7 +26,9 @@ interface AllowancesPageProps {
  * AllowancesPage - Full page for managing token allowances
  * Can be integrated into dashboard or used as standalone page
  */
-export function AllowancesPage({ contractId: initialContractId }: AllowancesPageProps) {
+export function AllowancesPage({
+  contractId: initialContractId,
+}: AllowancesPageProps) {
   const { connected, publicKey, signTransaction, connect } = useWallet();
   const { networkConfig } = useNetwork();
 
@@ -85,7 +87,8 @@ export function AllowancesPage({ contractId: initialContractId }: AllowancesPage
 
       setAllowances(results.filter((a) => a.amount !== "0"));
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to load allowances";
+      const message =
+        error instanceof Error ? error.message : "Failed to load allowances";
       setAllowancesError(message);
     } finally {
       setIsLoadingAllowances(false);
@@ -125,19 +128,22 @@ export function AllowancesPage({ contractId: initialContractId }: AllowancesPage
         <div className="text-center space-y-3">
           <Wallet className="h-12 w-12 text-stellar-400 mx-auto" />
           <h2 className="text-2xl font-bold text-white">Connect Your Wallet</h2>
-          <p className="text-gray-400">Please connect your wallet to manage allowances</p>
+          <p className="text-gray-400">
+            Please connect your wallet to manage allowances
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 py-10 mx-auto max-w-5xl min-h-[calc(100vh-10rem)]">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-white mb-2">Token Allowances</h1>
         <p className="text-gray-400">
-          Manage token approvals granted to other addresses or use allowances granted to you.
+          Manage token approvals granted to other addresses or use allowances
+          granted to you.
         </p>
       </div>
 
@@ -161,13 +167,16 @@ export function AllowancesPage({ contractId: initialContractId }: AllowancesPage
             variant="secondary"
             className="flex items-center gap-2"
           >
-            <RefreshCw className={`h-4 w-4 ${isLoadingAllowances ? "animate-spin" : ""}`} />
+            <RefreshCw
+              className={`h-4 w-4 ${isLoadingAllowances ? "animate-spin" : ""}`}
+            />
             Load
           </Button>
         </div>
         {contractId && (
           <p className="text-xs text-gray-500 mt-2">
-            Showing allowances for: <span className="font-mono">{contractId.slice(0, 16)}...</span>
+            Showing allowances for:{" "}
+            <span className="font-mono">{contractId.slice(0, 16)}...</span>
           </p>
         )}
       </div>
@@ -175,8 +184,8 @@ export function AllowancesPage({ contractId: initialContractId }: AllowancesPage
       {/* Connection Status */}
       <div className="bg-blue-600/10 border border-blue-600/50 rounded-lg p-4">
         <p className="text-sm text-blue-300">
-          <span className="font-mono">{publicKey.slice(0, 16)}...</span> — Connected on{" "}
-          {networkConfig.network}
+          <span className="font-mono">{publicKey.slice(0, 16)}...</span> —
+          Connected on {networkConfig.network}
         </p>
       </div>
 
@@ -184,12 +193,14 @@ export function AllowancesPage({ contractId: initialContractId }: AllowancesPage
       {networkConfig.network === "mainnet" && (
         <div className="bg-yellow-600/10 border border-yellow-600/50 rounded-lg p-4">
           <div className="flex gap-3">
-            <AlertCircle className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="h-5 w-5 text-yellow-400 shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-yellow-300">Mainnet Detected</p>
+              <p className="text-sm font-medium text-yellow-300">
+                Mainnet Detected
+              </p>
               <p className="text-xs text-yellow-200 mt-1">
-                You are about to manage allowances on {networkConfig.network}. Please be careful
-                with large allowances.
+                You are about to manage allowances on {networkConfig.network}.
+                Please be careful with large allowances.
               </p>
             </div>
           </div>
@@ -210,7 +221,9 @@ export function AllowancesPage({ contractId: initialContractId }: AllowancesPage
       ) : (
         <div className="glass-card p-12 border border-white/10 text-center">
           <AlertCircle className="h-10 w-10 text-gray-600 mx-auto mb-3" />
-          <p className="text-gray-400">Enter a token contract ID above to get started</p>
+          <p className="text-gray-400">
+            Enter a token contract ID above to get started
+          </p>
         </div>
       )}
     </div>

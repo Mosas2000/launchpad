@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AllowanceManager } from "@/components/AllowanceManager";
 import { AllowanceList } from "@/components/AllowanceList";
@@ -84,17 +84,20 @@ describe("AllowanceManager", () => {
 
   it("auto-dismisses notifications after 5 seconds", async () => {
     jest.useFakeTimers();
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
 
     render(<AllowanceManager />);
 
     const grantButton = screen.getByText("Grant (Mocked)");
-    await userEvent.click(grantButton);
+    await user.click(grantButton);
 
     await waitFor(() => {
       expect(screen.getByText(/Allowance granted successfully!/i)).toBeInTheDocument();
     });
 
-    jest.advanceTimersByTime(5000);
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
 
     await waitFor(() => {
       expect(screen.queryByText(/Allowance granted successfully!/i)).not.toBeInTheDocument();
@@ -169,18 +172,19 @@ describe("AllowanceList", () => {
   });
 
   it("copies spender address to clipboard", async () => {
-    Object.assign(navigator, {
-      clipboard: {
-        writeText: jest.fn().mockResolvedValue(undefined),
-      },
+    const user = userEvent.setup();
+    const writeText = jest.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText },
+      configurable: true
     });
 
     render(<AllowanceList allowances={[mockAllowances[0]]} />);
 
     const copyButton = screen.getAllByTitle("Copy address")[0];
-    await userEvent.click(copyButton);
+    await user.click(copyButton);
 
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(mockAllowances[0].spenderAddress);
+    expect(writeText).toHaveBeenCalledWith(mockAllowances[0].spenderAddress);
   });
 
   it("displays correct expiration ledger", () => {
@@ -198,9 +202,10 @@ describe("AllowanceList", () => {
   });
 
   it("disables revoke button for expired allowances", () => {
-    render(<AllowanceList allowances={[mockAllowances[1]]} />);
+    const onRevoke = jest.fn();
+    render(<AllowanceList allowances={[mockAllowances[1]]} onRevoke={onRevoke} />);
 
-    const expiredButton = screen.getByText("Expired");
+    const expiredButton = screen.getByRole("button", { name: /Expired/i });
     expect(expiredButton).toBeDisabled();
   });
 
@@ -208,8 +213,9 @@ describe("AllowanceList", () => {
     const onRevoke = jest.fn().mockResolvedValue(undefined);
     render(<AllowanceList allowances={[mockAllowances[0]]} onRevoke={onRevoke} />);
 
-    const revokeButton = screen.getByText("Revoke");
-    await userEvent.click(revokeButton);
+    const user = userEvent.setup();
+    const revokeButton = screen.getByRole("button", { name: /Revoke/i });
+    await user.click(revokeButton);
 
     expect(onRevoke).toHaveBeenCalledWith("1");
   });
@@ -223,8 +229,9 @@ describe("AllowanceList", () => {
     const onRevoke = jest.fn(() => revokePromise);
     render(<AllowanceList allowances={[mockAllowances[0]]} onRevoke={onRevoke} />);
 
-    const revokeButton = screen.getByText("Revoke");
-    await userEvent.click(revokeButton);
+    const user = userEvent.setup();
+    const revokeButton = screen.getByRole("button", { name: /Revoke/i });
+    await user.click(revokeButton);
 
     await waitFor(() => {
       expect(screen.getByText("Revoking...")).toBeInTheDocument();
@@ -284,8 +291,9 @@ describe("AllowanceList - Multiple allowances", () => {
     const onRevoke = jest.fn().mockResolvedValue(undefined);
     render(<AllowanceList allowances={mockAllowances} onRevoke={onRevoke} />);
 
-    const revokeButtons = screen.getAllByText("Revoke");
-    await userEvent.click(revokeButtons[0]);
+    const user = userEvent.setup();
+    const revokeButtons = screen.getAllByRole("button", { name: /Revoke/i });
+    await user.click(revokeButtons[0]);
 
     expect(onRevoke).toHaveBeenCalledWith("1");
   });

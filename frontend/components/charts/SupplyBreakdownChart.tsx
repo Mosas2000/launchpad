@@ -1,14 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Legend,
-  Tooltip,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { TrendingUp, Lock, Flame, Coins } from "lucide-react";
 
 /**
@@ -49,7 +42,15 @@ function formatNumber(num: number): string {
 /**
  * Custom tooltip for the chart
  */
-function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: { name: string; value: number; percentage: number } }> }) {
+function CustomTooltip({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: Array<{
+    payload: { name: string; value: number; percentage: number };
+  }>;
+}) {
   if (!active || !payload || !payload.length) return null;
 
   const data = payload[0].payload;
@@ -78,7 +79,16 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
 /**
  * Custom legend component
  */
-function CustomLegend({ data }: { data: Array<{ name: string; value: number; percentage: number; color: string }> }) {
+function CustomLegend({
+  data,
+}: {
+  data: Array<{
+    name: string;
+    value: number;
+    percentage: number;
+    color: string;
+  }>;
+}) {
   const icons = {
     "Circulating Supply": <TrendingUp className="h-4 w-4" />,
     "Locked (Vesting)": <Lock className="h-4 w-4" />,
@@ -138,18 +148,17 @@ function CustomLegend({ data }: { data: Array<{ name: string; value: number; per
 export default function SupplyBreakdownChart({
   data,
   symbol,
-  decimals,
 }: SupplyBreakdownChartProps) {
   // Color scheme inspired by DeFi dashboards
-  const COLORS = {
-    circulating: "#54a3ff", // Stellar blue
-    locked: "#f59e0b", // Amber for locked
-    burned: "#ef4444", // Red for burned
-  };
 
   // Prepare chart data
   const chartData = useMemo(() => {
     const total = data.total || 1; // Avoid division by zero
+    const COLORS = {
+      circulating: "#54a3ff", // Stellar blue
+      locked: "#f59e0b", // Amber for locked
+      burned: "#ef4444", // Red for burned
+    };
 
     return [
       {
@@ -236,7 +245,7 @@ export default function SupplyBreakdownChart({
       <CustomLegend data={chartData} />
 
       {/* Additional info */}
-      <div className="mt-6 rounded-lg border border-white/5 bg-white/[0.02] p-4">
+      <div className="mt-6 rounded-lg border border-white/5 bg-white/2 p-4">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-gray-500">Circulating %</p>

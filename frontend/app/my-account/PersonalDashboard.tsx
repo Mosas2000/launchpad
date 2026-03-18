@@ -252,7 +252,11 @@ function PersonalActivityTable({
   return (
     <div className="glass-card overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm" role="table" aria-label="Personal transaction history">
+        <table
+          className="w-full text-sm"
+          role="table"
+          aria-label="Personal transaction history"
+        >
           <thead>
             <tr className="border-b border-white/5 bg-white/5">
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
@@ -278,13 +282,12 @@ function PersonalActivityTable({
           <tbody className="divide-y divide-white/5">
             {operations.map((op, i) => {
               const direction = getDirection(op);
-              const counterparty =
-                op.from === publicKey ? op.to : op.from;
+              const counterparty = op.from === publicKey ? op.to : op.from;
 
               return (
                 <tr
                   key={`${op.id}-${i}`}
-                  className="transition-colors hover:bg-white/[0.02]"
+                  className="transition-colors hover:bg-white/2"
                 >
                   <td className="px-4 py-3">
                     <div
@@ -493,9 +496,7 @@ export default function PersonalDashboard() {
           <div className="mt-2 flex items-center gap-2 text-sm text-gray-400">
             <span className="font-mono text-xs">
               <span className="hidden md:inline">{publicKey}</span>
-              <span className="md:hidden">
-                {truncateAddress(publicKey, 8)}
-              </span>
+              <span className="md:hidden">{truncateAddress(publicKey, 8)}</span>
             </span>
             <CopyButton value={publicKey} label="Copy wallet address" />
           </div>

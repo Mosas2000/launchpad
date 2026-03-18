@@ -8,14 +8,21 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { PreflightCheckDisplay } from "@/components/ui/PreflightCheck";
 import { useTransactionSimulator } from "@/hooks/useTransactionSimulator";
-import { AlertCircle, CheckCircle, Rocket } from "lucide-react";
+import { Rocket } from "lucide-react";
 
 const mintSchema = z.object({
-  tokenContractId: z.string().regex(/^C[A-Z0-9]{55}$/, "Invalid token contract ID"),
-  recipientAddress: z.string().regex(/^G[A-Z2-7]{55}$/, "Invalid recipient address"),
+  tokenContractId: z
+    .string()
+    .regex(/^C[A-Z0-9]{55}$/, "Invalid token contract ID"),
+  recipientAddress: z
+    .string()
+    .regex(/^G[A-Z2-7]{55}$/, "Invalid recipient address"),
   amount: z
     .string()
-    .refine((v) => !isNaN(parseFloat(v)) && parseFloat(v) > 0, "Amount must be positive"),
+    .refine(
+      (v) => !isNaN(parseFloat(v)) && parseFloat(v) > 0,
+      "Amount must be positive",
+    ),
 });
 
 type MintFormData = z.infer<typeof mintSchema>;
@@ -56,7 +63,12 @@ export function MintForm({ adminAddress, onSuccess }: MintFormProps) {
     const isValid = await trigger();
     if (!isValid) return;
 
-    setPreflightResult({ isLoading: true, success: false, errors: [], warnings: [] });
+    setPreflightResult({
+      isLoading: true,
+      success: false,
+      errors: [],
+      warnings: [],
+    });
 
     try {
       const result = await simulator.checkMint(
@@ -103,7 +115,10 @@ export function MintForm({ adminAddress, onSuccess }: MintFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="glass-card p-6 space-y-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="glass-card p-6 space-y-6"
+    >
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-2">
           Token Contract ID
@@ -114,7 +129,9 @@ export function MintForm({ adminAddress, onSuccess }: MintFormProps) {
           {...register("tokenContractId")}
         />
         {errors.tokenContractId && (
-          <p className="text-red-400 text-sm mt-1">{errors.tokenContractId.message}</p>
+          <p className="text-red-400 text-sm mt-1">
+            {errors.tokenContractId.message}
+          </p>
         )}
       </div>
 
@@ -128,7 +145,9 @@ export function MintForm({ adminAddress, onSuccess }: MintFormProps) {
           {...register("recipientAddress")}
         />
         {errors.recipientAddress && (
-          <p className="text-red-400 text-sm mt-1">{errors.recipientAddress.message}</p>
+          <p className="text-red-400 text-sm mt-1">
+            {errors.recipientAddress.message}
+          </p>
         )}
       </div>
 
@@ -136,11 +155,7 @@ export function MintForm({ adminAddress, onSuccess }: MintFormProps) {
         <label className="block text-sm font-medium text-gray-300 mb-2">
           Amount
         </label>
-        <Input
-          type="text"
-          placeholder="1000.50"
-          {...register("amount")}
-        />
+        <Input type="text" placeholder="1000.50" {...register("amount")} />
         {errors.amount && (
           <p className="text-red-400 text-sm mt-1">{errors.amount.message}</p>
         )}
@@ -153,7 +168,9 @@ export function MintForm({ adminAddress, onSuccess }: MintFormProps) {
             isLoading={preflightResult.isLoading}
             errors={preflightResult.errors}
             warnings={preflightResult.warnings}
-            successMessage={preflightResult.success ? "Ready to mint tokens" : undefined}
+            successMessage={
+              preflightResult.success ? "Ready to mint tokens" : undefined
+            }
             onDismiss={() => setPreflightResult(null)}
           />
         </div>
@@ -170,7 +187,9 @@ export function MintForm({ adminAddress, onSuccess }: MintFormProps) {
         </Button>
         <Button
           type="submit"
-          disabled={!isValid || isSubmitting || !(preflightResult?.success ?? false)}
+          disabled={
+            !isValid || isSubmitting || !(preflightResult?.success ?? false)
+          }
           isLoading={isSubmitting}
         >
           <Rocket className="w-4 h-4" />

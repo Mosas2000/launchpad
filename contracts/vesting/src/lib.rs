@@ -51,10 +51,8 @@ impl VestingContract {
             .instance()
             .set(&DataKey::TokenContract, &token_contract);
 
-        env.events().publish(
-            (symbol_short!("init"),),
-            (admin, token_contract),
-        );
+        env.events()
+            .publish((symbol_short!("init"),), (admin, token_contract));
     }
 
     // ── Admin actions ───────────────────────────────────────────────────
@@ -96,10 +94,8 @@ impl VestingContract {
 
         env.storage().persistent().set(&key, &schedule);
 
-        env.events().publish(
-            (symbol_short!("create"), recipient),
-            total_amount,
-        );
+        env.events()
+            .publish((symbol_short!("create"), recipient), total_amount);
     }
 
     /// Release all currently vested (but unreleased) tokens to the recipient.
@@ -132,10 +128,8 @@ impl VestingContract {
         let token_client = soroban_sdk::token::Client::new(&env, &token_addr);
         token_client.transfer(&env.current_contract_address(), &recipient, &releasable);
 
-        env.events().publish(
-            (symbol_short!("release"), recipient),
-            releasable,
-        );
+        env.events()
+            .publish((symbol_short!("release"), recipient), releasable);
     }
 
     /// Admin-only: revoke a schedule, send vested portion to recipient,
@@ -186,10 +180,8 @@ impl VestingContract {
             token_client.transfer(&env.current_contract_address(), &admin, &unvested);
         }
 
-        env.events().publish(
-            (symbol_short!("revoke"), recipient),
-            (releasable, unvested),
-        );
+        env.events()
+            .publish((symbol_short!("revoke"), recipient), (releasable, unvested));
     }
 
     // ── Read-only queries ───────────────────────────────────────────────
@@ -274,11 +266,11 @@ mod test {
     fn setup_schedule(env: &Env, client: &VestingContractClient) -> (Address, Address) {
         let admin = Address::generate(env);
         let recipient = Address::generate(env);
-        
+
         // Register a mock token contract
         let token = env.register_stellar_asset_contract(admin.clone());
         let token_client = soroban_sdk::token::StellarAssetClient::new(env, &token);
-        
+
         // Mint tokens to the vesting contract
         token_client.mint(&client.address, &1_000_000i128);
 
@@ -443,7 +435,7 @@ mod test {
 
         // Ledger 150 — 50% vested (500 tokens)
         env.ledger().set_sequence_number(150);
-        
+
         // Revoke
         client.revoke(&recipient);
 
@@ -467,7 +459,7 @@ mod test {
 
         // Ledger 50 — nothing vested
         env.ledger().set_sequence_number(50);
-        
+
         client.revoke(&recipient);
 
         let schedule = client.get_schedule(&recipient);
@@ -486,7 +478,7 @@ mod test {
 
         // Ledger 250 — fully vested
         env.ledger().set_sequence_number(250);
-        
+
         client.revoke(&recipient);
 
         let schedule = client.get_schedule(&recipient);
@@ -513,16 +505,16 @@ mod test {
     fn test_revoke_non_admin_panics() {
         let env = Env::default();
         // Do NOT mock auths here to test requirement
-        
+
         let contract_id = env.register_contract(None, VestingContract);
         let client = VestingContractClient::new(&env, &contract_id);
-        
+
         let admin = Address::generate(&env);
         let recipient = Address::generate(&env);
         let token = Address::generate(&env);
 
         client.initialize(&admin, &token);
-        
+
         // This should fail because we haven't mocked auth for admin
         client.revoke(&recipient);
     }

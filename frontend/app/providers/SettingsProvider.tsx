@@ -47,7 +47,6 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       const storedHorizon = localStorage.getItem(LS_HORIZON_KEY);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (storedRpc) setRpcUrlState(storedRpc);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (storedHorizon) setHorizonUrlState(storedHorizon);
     } catch {
       // localStorage unavailable (SSR or privacy mode)

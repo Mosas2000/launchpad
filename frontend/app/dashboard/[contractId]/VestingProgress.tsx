@@ -17,7 +17,7 @@ import {
   submitTransaction,
   type VestingScheduleInfo,
 } from "@/lib/stellar";
-import { CopyButton } from "@/components/ui/CopyButton";
+// import { CopyButton } from "@/components/ui/CopyButton";
 import { useSoroban } from "@/hooks/useSoroban";
 import { useWallet } from "@/app/hooks/useWallet";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
@@ -449,7 +449,7 @@ export default function VestingProgress({ decimals }: { decimals: number }) {
     } finally {
       setLoading(false);
     }
-  }, [vestingContract, recipient]);
+  }, [vestingContract, recipient, fetchCurrentLedger, fetchVestingSchedule]);
 
   return (
     <div className="space-y-4">
