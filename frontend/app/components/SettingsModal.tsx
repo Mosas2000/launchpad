@@ -3,10 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Settings, X, RotateCcw, CheckCircle, AlertCircle } from "lucide-react";
 import { useSettings } from "../hooks/useSettings";
-import {
-  DEFAULT_RPC_URL,
-  DEFAULT_HORIZON_URL,
-} from "../providers/SettingsProvider";
 
 // ---------------------------------------------------------------------------
 // URL validation
@@ -28,8 +24,15 @@ type ValidationState = "idle" | "validating" | "valid" | "invalid";
 // ---------------------------------------------------------------------------
 
 export function SettingsModal() {
-  const { rpcUrl, horizonUrl, setRpcUrl, setHorizonUrl, resetToDefaults } =
-    useSettings();
+  const {
+    rpcUrl,
+    horizonUrl,
+    defaultRpcUrl,
+    defaultHorizonUrl,
+    setRpcUrl,
+    setHorizonUrl,
+    resetToDefaults,
+  } = useSettings();
 
   const [open, setOpen] = useState(false);
   const [draftRpc, setDraftRpc] = useState(rpcUrl);
@@ -190,7 +193,7 @@ export function SettingsModal() {
   // Render
   // ---------------------------------------------------------------------------
   const isDefault =
-    draftRpc === DEFAULT_RPC_URL && draftHorizon === DEFAULT_HORIZON_URL;
+    draftRpc === defaultRpcUrl && draftHorizon === defaultHorizonUrl;
 
   return (
     <>
@@ -241,7 +244,7 @@ export function SettingsModal() {
                   setRpcStatus("idle");
                   setRpcError("");
                 }}
-                placeholder={DEFAULT_RPC_URL}
+                placeholder={defaultRpcUrl}
                 className={`w-full rounded-xl border bg-void-800/50 px-4 py-3 pr-10 text-white placeholder:text-gray-500 transition-all duration-300 focus:outline-none focus:ring-1 ${
                   rpcStatus === "invalid"
                     ? "border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20"
@@ -271,7 +274,7 @@ export function SettingsModal() {
                   setHorizonStatus("idle");
                   setHorizonError("");
                 }}
-                placeholder={DEFAULT_HORIZON_URL}
+                placeholder={defaultHorizonUrl}
                 className={`w-full rounded-xl border bg-void-800/50 px-4 py-3 pr-10 text-white placeholder:text-gray-500 transition-all duration-300 focus:outline-none focus:ring-1 ${
                   horizonStatus === "invalid"
                     ? "border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20"
