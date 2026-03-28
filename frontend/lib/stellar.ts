@@ -108,7 +108,7 @@ async function simulateAndAssembleTransaction(
 /**
  * Simulate a read-only Soroban contract invocation and return the result xdr.
  */
-async function simulateCall(
+export async function simulateCall(
   contractId: string,
   method: string,
   config: NetworkConfig,
