@@ -4,6 +4,7 @@ import "./globals.css";
 import { WalletProvider } from "./providers/WalletProvider";
 import { SettingsProvider } from "./providers/SettingsProvider";
 import { NetworkProvider } from "./providers/NetworkProvider";
+import { AccessibilityProvider } from "./providers/AccessibilityProvider";
 import { Navbar } from "./components/Navbar";
 import { MainnetWarning } from "./components/MainnetWarning";
 
@@ -42,20 +43,22 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <NetworkProvider>
           <SettingsProvider>
             <WalletProvider>
-              {/* ── Navbar ──────────────────────────────────────────── */}
+              <AccessibilityProvider>
               <Navbar />
 
-              {/* Mainnet Warning Banner */}
               <MainnetWarning />
 
-              {/* Page content offset for fixed nav */}
-              <main className="pt-16">{children}</main>
+              <main id="main-content" className="pt-16" role="main">
+                {children}
+              </main>
 
-            {/* ── Footer ─────────────────────────────────────────── */}
-            <footer className="border-t border-white/5 py-8 text-center text-sm text-gray-500">
+            <footer role="contentinfo" className="border-t border-white/5 py-8 text-center text-sm text-gray-500">
               <p>
                 Built for the{" "}
                 <a
@@ -69,6 +72,7 @@ export default function RootLayout({
                 · MIT License
               </p>
             </footer>
+              </AccessibilityProvider>
             </WalletProvider>
           </SettingsProvider>
         </NetworkProvider>
